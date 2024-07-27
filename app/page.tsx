@@ -1,113 +1,270 @@
-import Image from "next/image";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
+import axios from "axios";
+import { useState } from "react";
 
-export default function Home() {
+export default function Component() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div>
+      <header className="bg-background border-b">
+        <div className="container max-w-6xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
+          <Link href="#" className="flex items-center gap-2" prefetch={false}>
+            <XIcon className="h-6 w-6" />
+            <span className="text-lg font-medium">Sentiment AI</span>
+          </Link>
+          <nav className="hidden md:flex items-center gap-4">
+            <Link
+              href="#"
+              className="text-sm font-medium hover:underline"
+              prefetch={false}
+            >
+              Features
+            </Link>
+            <Link
+              href="#"
+              className="text-sm font-medium hover:underline"
+              prefetch={false}
+            >
+              Pricing
+            </Link>
+            <Link
+              href="#"
+              className="text-sm font-medium hover:underline"
+              prefetch={false}
+            >
+              About
+            </Link>
+            <Link
+              href="#"
+              className="text-sm font-medium hover:underline"
+              prefetch={false}
+            >
+              Contact
+            </Link>
+          </nav>
+        </div>
+      </header>
+
+      <div className="grid md:grid-cols-[300px_1fr] gap-6 w-full max-w-6xl mx-auto p-6">
+        <div className="bg-background rounded-lg border">
+          <div className="p-4 border-b">
+            <h2 className="text-lg font-medium">Text Analysis</h2>
+          </div>
+          <div className="p-4 space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="text-input">Paste or type your text</Label>
+              <Textarea
+                id="text-input"
+                rows={8}
+                placeholder="Start typing or paste your text here..."
+                className="resize-none"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Analysis Preferences</Label>
+              <div className="grid gap-2">
+                <div className="flex items-center gap-2">
+                  <Checkbox id="grammar-check" defaultChecked />
+                  <Label htmlFor="grammar-check">Grammar Check</Label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Checkbox id="spelling-check" defaultChecked />
+                  <Label htmlFor="spelling-check">Spelling Check</Label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Checkbox id="tone-analysis" />
+                  <Label htmlFor="tone-analysis">Tone Analysis</Label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Checkbox id="word-count" defaultChecked />
+                  <Label htmlFor="word-count">Word Count</Label>
+                </div>
+              </div>
+            </div>
+            <Button>Analyze Text</Button>
+          </div>
+        </div>
+        <div className="bg-background rounded-lg border">
+          <div className="p-4 border-b">
+            <h2 className="text-lg font-medium">Analysis Results</h2>
+          </div>
+          <div className="p-4 space-y-6">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <h3 className="text-base font-medium">Grammar Issues</h3>
+                <Badge variant="outline" className="px-2 py-1 text-xs">
+                  3
+                </Badge>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 text-red-500">
+                    <CircleAlertIcon className="w-5 h-5" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-medium">Incorrect verb tense</p>
+                    <p className="text-sm text-muted-foreground">
+                      The verb "was" should be in the past tense.
+                    </p>
+                    <div className="mt-2">
+                      <Button variant="ghost" size="sm">
+                        Fix
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 text-red-500">
+                    <CircleAlertIcon className="w-5 h-5" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-medium">Missing comma</p>
+                    <p className="text-sm text-muted-foreground">
+                      Add a comma after the dependent clause.
+                    </p>
+                    <div className="mt-2">
+                      <Button variant="ghost" size="sm">
+                        Fix
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <h3 className="text-base font-medium">Spelling Errors</h3>
+                <Badge variant="outline" className="px-2 py-1 text-xs">
+                  2
+                </Badge>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 text-yellow-500">
+                    <TriangleAlertIcon className="w-5 h-5" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-medium">Misspelled word</p>
+                    <p className="text-sm text-muted-foreground">
+                      The word "recieve" should be "receive".
+                    </p>
+                    <div className="mt-2">
+                      <Button variant="ghost" size="sm">
+                        Fix
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 text-yellow-500">
+                    <TriangleAlertIcon className="w-5 h-5" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-medium">Misspelled word</p>
+                    <p className="text-sm text-muted-foreground">
+                      The word "occured" should be "occurred".
+                    </p>
+                    <div className="mt-2">
+                      <Button variant="ghost" size="sm">
+                        Fix
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <h3 className="text-base font-medium">Tone Analysis</h3>
+                <Badge variant="outline" className="px-2 py-1 text-xs">
+                  Neutral
+                </Badge>
+              </div>
+              <div className="text-sm text-muted-foreground">
+                The overall tone of the text is neutral. No significant
+                emotional language detected.
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <h3 className="text-base font-medium">Word Count</h3>
+                <Badge variant="outline" className="px-2 py-1 text-xs">
+                  243
+                </Badge>
+              </div>
+              <div className="text-sm text-muted-foreground">
+                The text contains 243 words.
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+    </div>
+  );
+}
 
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+function CircleAlertIcon(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" x2="12" y1="8" y2="12" />
+      <line x1="12" x2="12.01" y1="16" y2="16" />
+    </svg>
+  );
+}
 
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+function TriangleAlertIcon(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+      <path d="M12 9v4" />
+      <path d="M12 17h.01" />
+    </svg>
+  );
+}
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+function XIcon(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg>
   );
 }
